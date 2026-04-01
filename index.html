@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up form</title>
+    <!-- STYLE STARTS HERE AND IT IS AN INLINE STYLING-->
+    <style>
+        * {
+            font-family: 'Times New Roman', Times, serif;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+
+            align-items: center;
+            height: 50vh;
+        }
+
+        .sign-form {
+            background-color: #fff;
+            width: 400px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-family: cursive;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            outline: none;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+        }
+
+        .gender-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        input[type="radio"] + label {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        input[type="submit"]:active {
+            transform: scale(0.98);
+        }
+
+        .error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sign-form">
+        <h1>Sign Up</h1>
+
+        <form id="signupForm" method="post">
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" name="first-name" placeholder="Enter First Name" required>
+            <div class="error" id="first-name-error">First name is required</div>
+        
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" name="last-name" placeholder="Enter Last Name" required>
+            <div class="error" id="last-name-error">Last name is required</div>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter Email" required>
+            <div class="error" id="email-error">Please enter a valid email</div>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter Password (min 6 characters)" required>
+            <div class="error" id="password-error">Password must be at least 6 characters</div>
+
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+            <div class="error" id="confirm-password-error">Passwords do not match</div>
+
+            <div class="gender-group">
+                <label style="display: block; margin-bottom: 10px;">Gender:</label>
+                <input type="radio" id="male" name="gender" value="male" required>
+                <label for="male">Male</label>
+
+                <input type="radio" id="female" name="gender" value="female" required>
+                <label for="female">Female</label>
+
+                <input type="radio" id="other" name="gender" value="other" required>
+                <label for="other">Other</label>
+                <div class="error" id="gender-error">Please select a gender</div>
+            </div>
+
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const firstNameInput = document.getElementById('first-name');
+        const lastNameInput = document.getElementById('last-name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const genderInputs = document.querySelectorAll('input[name="gender"]');
+
+        // Real-time validation
+        firstNameInput.addEventListener('blur', validateFirstName);
+        lastNameInput.addEventListener('blur', validateLastName);
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('blur', validatePassword);
+        confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+
+        function validateFirstName() {
+            const error = document.getElementById('first-name-error');
+            if (firstNameInput.value.trim() === '') {
+                error.classList.add('show');
+                return false;
+            }
+            error.classList.remove('show');
+            return true;
+        }
+
+        function validateLastName() {
+            const error = document.getElementById('last-name-error');
+            if (lastNameInput.value.trim() === '') {
+                error.classList.add('show');
+                return false;
+            }
+            error.classList.remove('show');
+            return true;
+        }
+
+        function validateEmail() {
+            const error = document.getElementById('email-error');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value)) {
+                error.classList.add('show');
+                return false;
+            }
+            error.classList.remove('show');
+            return true;
+        }
+
+        function validatePassword() {
+            const error = document.getElementById('password-error');
+            if (passwordInput.value.length < 6) {
+                error.classList.add('show');
+                return false;
+            }
+            error.classList.remove('show');
+            validateConfirmPassword(); // Check confirmation when password changes
+            return true;
+        }
+
+        function validateConfirmPassword() {
+            const error = document.getElementById('confirm-password-error');
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                error.classList.add('show');
+                return false;
+            }
+            error.classList.remove('show');
+            return true;
+        }
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate all fields
+            const isFirstNameValid = validateFirstName();
+            const isLastNameValid = validateLastName();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+
+            // Validate gender
+            const isGenderSelected = Array.from(genderInputs).some(input => input.checked);
+            const genderError = document.getElementById('gender-error');
+            if (!isGenderSelected) {
+                genderError.classList.add('show');
+            } else {
+                genderError.classList.remove('show');
+            }
+
+            // If all validations pass
+            if (isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isGenderSelected) {
+                alert('Sign up successful!');
+                form.reset();
+            }
+        });
+    </script>
+</body>
+
+</html>
